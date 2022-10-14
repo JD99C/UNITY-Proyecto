@@ -358,6 +358,8 @@
 "Assets/Scripts/LogicaPies.cs"
 "Assets/Scripts/MainMenu.cs"
 "Assets/Scripts/Personaje.cs"
+"Assets/Scripts/Rotator.cs"
+"Assets/Scripts/TiempoDeVida.cs"
 -langversion:9.0
 
 /deterministic
