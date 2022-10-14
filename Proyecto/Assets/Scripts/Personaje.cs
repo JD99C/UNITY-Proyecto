@@ -10,10 +10,21 @@ public class Personaje : MonoBehaviour
     private Animator anim;
     public float x, y;
 
+    public Rigidbody rb;
+    public float fuerzaSalto = 8f;
+    public bool puedoSaltar;
+
     // Start is called before the first frame update
     void Start()
     {
+        puedoSaltar = false;
         anim = GetComponent<Animator>();
+    }
+
+     void FixedUpdate()
+    {
+        transform.Rotate(0, x * Time.deltaTime * speedRatator, 0);
+        transform.Translate(0, 0, y * Time.deltaTime * speed);
     }
 
     // Update is called once per frame
@@ -22,10 +33,29 @@ public class Personaje : MonoBehaviour
         x = Input.GetAxis("Horizontal");
         y = Input.GetAxis("Vertical");
 
-        transform.Rotate(0, x * Time.deltaTime * speedRatator, 0);
-        transform.Translate(0, 0, y * Time.deltaTime * speed);
-
         anim.SetFloat("VelX", x);
         anim.SetFloat("VelY", y);
+
+        if(puedoSaltar == true)
+        {
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton0) )
+            {
+                anim.SetBool("salte", true);
+                rb.AddForce(new Vector3(0, fuerzaSalto, 0), ForceMode.Impulse);
+            }
+            anim.SetBool("tocoSuelo", true);
+        }
+        else
+        {
+            EstoyCayendo();
+        }
+
+
+    }
+
+    public void EstoyCayendo()
+    {
+        anim.SetBool("tocoSuelo", false);
+        anim.SetBool("salte", false);
     }
 }
