@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using TMPro;
+using System;
 
 public class Personaje : MonoBehaviour
 {
@@ -15,13 +16,17 @@ public class Personaje : MonoBehaviour
     public Rigidbody rb;
     public float fuerzaSalto = 8f;
     public bool puedoSaltar;
-    //Menu - Contador - UI
-    private int count;
+    //Menu - Contador - UI - Scene1
+   [SerializeField] private int count;
     public TextMeshProUGUI countText;
-    //UI Win
-    public GameObject winTextObject;
+    
     //Auidio Pick
     public GameObject audioPick;
+
+    //UI Win Scene2
+    public GameObject winTextObject;
+    public TextMeshProUGUI countText2;
+    [SerializeField] private int count2;
 
 
     // Start is called before the first frame update
@@ -32,7 +37,7 @@ public class Personaje : MonoBehaviour
 
         // Add one to the score variable 'count'
         count = 0;
-
+        count2 = 0;
         // Run the 'SetCountText()' function (see below)
         SetCountText();
 
@@ -91,24 +96,59 @@ public class Personaje : MonoBehaviour
             
         }
 
-        if (other.CompareTag("PickUp"))
+        if (other.gameObject.CompareTag("PickUp"))
+        {
+            Instantiate(audioPick);
+        }
+
+        if (other.gameObject.CompareTag("PickUp2"))
+        {
+            other.gameObject.SetActive(false);
+
+            // Add one to the score variable 'count'
+            count2 = count2 + 1;
+
+            // Run the 'SetCountText()' function (see below)
+            SetCountText2();
+        }
+
+        if (other.gameObject.CompareTag("PickUp2"))
         {
             Instantiate(audioPick);
         }
 
         if (other.gameObject.CompareTag("Limite"))
         {
-            SceneManager.LoadScene("Juego");
+            Vector3 posicion = new Vector3(0, 0.5f, 0);
+            transform.position = posicion;
+        }
+
+        if (other.gameObject.CompareTag("Limite2"))
+        {
+            Vector3 posicion = new Vector3(0, 31f, 0);
+            transform.position = posicion;
         }
     }
 
     void SetCountText()
     {
-        countText.text = "Count: " + count.ToString();
+        countText.text = "Puntos: " + count.ToString();
 
-        if (count >= 13)
+        if (count >= 12)
+        {
+            SceneManager.LoadScene("Juego2");
+        }
+    }
+
+    void SetCountText2()
+    {
+        countText2.text = "Manzanas: " + count2.ToString();
+
+
+        if (count2 >= 9)
         {
             winTextObject.SetActive(true);
         }
     }
+
 }

@@ -13,5 +13,8 @@ public class GameMenu : MonoBehaviour
     {
         SceneManager.LoadScene("Menu");
     }
-
+    public void ReiniciarJuego2()
+    {
+        SceneManager.LoadScene("Juego2");
+    }
 }
